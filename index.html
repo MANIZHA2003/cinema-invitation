@@ -412,14 +412,41 @@
                 let dy = Math.sin(angle) * distance;
 
                 const rect = noWrapper.getBoundingClientRect();
-                const newLeft = rect.left + dx;
-                const newTop = rect.top + dy;
                 const pad = 30;
 
+                // Screen bounds
+                let newLeft = rect.left + dx;
+                let newTop = rect.top + dy;
                 if (newLeft < pad) dx += (pad - newLeft);
                 if (newLeft + rect.width > window.innerWidth - pad) dx -= (newLeft + rect.width - window.innerWidth + pad);
                 if (newTop < pad) dy += (pad - newTop);
                 if (newTop + rect.height > window.innerHeight - pad) dy -= (newTop + rect.height - window.innerHeight + pad);
+
+                // Avoid overlapping card content (question text + Yes button)
+                const yesRect = btnYes.getBoundingClientRect();
+                const cardRect = document.getElementById('card').getBoundingClientRect();
+                const m = 15;
+                const cTop = cardRect.top - m;
+                const cBottom = yesRect.bottom + m;
+                const cLeft = cardRect.left - m;
+                const cRight = cardRect.right + m;
+
+                newLeft = rect.left + dx;
+                newTop = rect.top + dy;
+                const overlapsH = (newLeft + rect.width) > cLeft && newLeft < cRight;
+                const overlapsV = (newTop + rect.height) > cTop && newTop < cBottom;
+
+                if (overlapsH && overlapsV) {
+                    // Push below the content area
+                    dy = (cBottom + 15) - rect.top;
+                    if (rect.top + dy + rect.height > window.innerHeight - pad) {
+                        // Can't go below — go to the side instead
+                        dy = 0;
+                        dx = rect.left < window.innerWidth / 2
+                            ? -(rect.left - pad + rect.width)
+                            : (window.innerWidth - pad - rect.left - rect.width);
+                    }
+                }
 
                 totalX += dx;
                 totalY += dy;
@@ -515,7 +542,7 @@
                 card.innerHTML = `
                     <p style="font-size:2.5rem; margin-bottom:10px;">🍿</p>
                     <p style="font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:#fff;
-                        margin-bottom:35px;">რა წავიღოთ?</p>
+                        margin-bottom:35px;">რა ჯობს?</p>
                     <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
                         <button class="btn-choice" data-choice="1"
                             style="padding:14px 30px; width:100%; max-width:320px; font-family:'Inter',sans-serif;
