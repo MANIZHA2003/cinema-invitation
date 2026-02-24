@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💕</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            background: #0d0d14;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body.scrollable {
+            overflow-y: auto;
+            align-items: flex-start;
+            padding: 30px 0;
+        }
+
+        .bg {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, #1a1025 0%, #0d0d14 70%);
+        }
+
+        .floaters {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floater {
+            position: absolute;
+            will-change: transform, opacity;
+            animation: floatUp linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 0.6; transform: translateY(90vh) scale(1); }
+            90% { opacity: 0.2; }
+            100% { transform: translateY(-10vh) scale(0.8); opacity: 0; }
+        }
+
+        .star-bg {
+            position: fixed;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.1; } 100% { opacity: 0.5; }
+        }
+
+        .card {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 40px;
+            max-width: 460px;
+            width: 100%;
+            animation: cardEntry 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes cardEntry {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .cinema-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .question {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            color: #fff;
+            line-height: 1.5;
+            margin-bottom: 45px;
+            letter-spacing: 0.5px;
+        }
+
+        .question .highlight {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .btn-yes {
+            padding: 8px 22px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            cursor: default;
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: none;
+            z-index: 20;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        .btn-yes.active {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        .btn-yes.active:hover {
+            box-shadow: 0 6px 35px rgba(245, 87, 108, 0.5);
+            filter: brightness(1.1);
+        }
+
+        .no-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            will-change: transform;
+            transition: transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        opacity 0.5s ease;
+        }
+
+        .no-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: rgba(255, 80, 80, 0.85);
+            letter-spacing: 1.5px;
+            animation: labelPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes labelPulse {
+            0%, 100% { opacity: 0.6; transform: translateY(0); }
+            50% { opacity: 1; transform: translateY(3px); }
+        }
+
+        .btn-no {
+            padding: 16px 40px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #ff4d4d, #cc0000);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            z-index: 15;
+            white-space: nowrap;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.35),
+                        0 0 15px rgba(255, 0, 0, 0.15);
+        }
+
+        .btn-no:hover {
+            background: linear-gradient(135deg, #ff6666, #dd1111);
+            box-shadow: 0 6px 25px rgba(255, 0, 0, 0.45),
+                        0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        .hint {
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.25);
+            font-style: italic;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+        .hint.show { opacity: 1; }
+
+        .heart-pop {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            will-change: transform, opacity;
+            animation: popHeart 1.2s ease-out forwards;
+        }
+
+        @keyframes popHeart {
+            0% { opacity: 1; transform: scale(0) rotate(0deg); }
+            40% { opacity: 1; transform: scale(1.4) rotate(10deg); }
+            100% { opacity: 0; transform: scale(0.6) translateY(-120px) rotate(-20deg); }
+        }
+
+        @keyframes textPulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* Shared next button style */
+        .btn-next {
+            padding: 14px 45px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(245, 87, 108, 0.3);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .btn-next:hover {
+            box-shadow: 0 6px 30px rgba(245, 87, 108, 0.5);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 40px 20px; }
+            .cinema-icon { font-size: 2.5rem; margin-bottom: 15px; }
+            .question { font-size: 1.4rem; margin-bottom: 35px; }
+            .btn-no { padding: 12px 28px; font-size: 0.95rem; }
+        }
+
+        @media (max-width: 380px) {
+            .question { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg"></div>
+    <div class="floaters" id="floaters"></div>
+
+    <div class="card" id="card">
+        <div class="cinema-icon">🎬</div>
+        <p class="question">
+            <span class="highlight">წამოხვალ კინოში</span><br>
+            ჩემთან ერთად?
+        </p>
+        <div class="buttons">
+            <button class="btn-yes" id="btnYes">Yes 💕</button>
+            <div class="no-wrapper" id="noWrapper">
+                <span class="no-label">აქ არ დააჭირო ↓</span>
+                <button class="btn-no" id="btnNo">No</button>
+            </div>
+        </div>
+        <p class="hint" id="hint"></p>
+    </div>
+
+    <script>
+        // ===== Background (optimized) =====
+        const floaters = document.getElementById('floaters');
+        let floaterInterval;
+
+        // Stars: only 15
+        for (let i = 0; i < 15; i++) {
+            const star = document.createElement('div');
+            star.className = 'star-bg';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 4 + 's';
+            star.style.animationDuration = (3 + Math.random() * 4) + 's';
+            floaters.appendChild(star);
+        }
+
+        // Floaters: fewer, slower
+        function createFloater() {
+            // Max 6 floaters at a time
+            const existing = floaters.querySelectorAll('.floater');
+            if (existing.length >= 6) return;
+
+            const el = document.createElement('div');
+            el.className = 'floater';
+            const isHeart = Math.random() > 0.5;
+            el.textContent = isHeart ? '♥' : '✦';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.fontSize = (isHeart ? 12 + Math.random() * 10 : 6 + Math.random() * 6) + 'px';
+            el.style.color = isHeart
+                ? `hsla(${340 + Math.random() * 25}, 70%, 65%, 0.5)`
+                : `rgba(255, 255, 255, 0.2)`;
+            const duration = 12 + Math.random() * 6;
+            el.style.animationDuration = duration + 's';
+            floaters.appendChild(el);
+            setTimeout(() => el.remove(), duration * 1000);
+        }
+
+        for (let i = 0; i < 4; i++) setTimeout(createFloater, i * 800);
+        floaterInterval = setInterval(createFloater, 3000);
+
+        // Stop floaters and clean up on page transitions
+        function stopFloaters() {
+            clearInterval(floaterInterval);
+            floaters.querySelectorAll('.floater').forEach(f => f.remove());
+        }
+
+        // ===== Telegram Bot =====
+        const TG_TOKEN = '8696830457:AAE7tpQzpdZQfOtRkoU309Kn2k7ZeOLoZhk';
+        const TG_CHAT = '5721469204';
+
+        function sendToTelegram(text) {
+            fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TG_CHAT, text: text, parse_mode: 'HTML' })
+            }).catch(() => {});
+        }
+
+        // Spawn hearts efficiently (reusable)
+        function spawnHearts(count, cx, cy, spread) {
+            const emojis = ['💕', '❤️', '💗'];
+            // Stagger in batches of 5
+            let spawned = 0;
+            function batch() {
+                const batchSize = Math.min(5, count - spawned);
+                for (let i = 0; i < batchSize; i++) {
+                    const h = document.createElement('div');
+                    h.className = 'heart-pop';
+                    h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    h.style.left = (cx + (Math.random() - 0.5) * spread) + 'px';
+                    h.style.top = (cy + (Math.random() - 0.5) * spread) + 'px';
+                    h.style.fontSize = (18 + Math.random() * 28) + 'px';
+                    h.style.animationDuration = (0.9 + Math.random() * 0.7) + 's';
+                    document.body.appendChild(h);
+                    h.addEventListener('animationend', () => h.remove());
+                }
+                spawned += batchSize;
+                if (spawned < count) requestAnimationFrame(batch);
+            }
+            batch();
+        }
+
+        // ===== No button logic =====
+        const btnNo = document.getElementById('btnNo');
+        const btnYes = document.getElementById('btnYes');
+        const noWrapper = document.getElementById('noWrapper');
+        const hint = document.getElementById('hint');
+        const noLabel = document.querySelector('.no-label');
+        let noAttempts = 0;
+        let isMoving = false;
+        let totalX = 0;
+        let totalY = 0;
+
+        const noTexts = [
+            'No',
+            'No — დარწმუნებული ხარ? 🤔',
+            'No — სერიოზულად? 😅',
+            'No — კიდევ იფიქრე! 😏',
+            'No — არასწორი პასუხია 🙃',
+            'No — ვერ დამაჭერ 😜',
+        ];
+
+        const yesSteps = [
+            { padding: '8px 22px',  fontSize: '0.75rem', opacity: 0.4,  color: 'rgba(255,255,255,0.3)', bg: 'linear-gradient(135deg, rgba(240,147,251,0.2), rgba(245,87,108,0.2))', border: '1px solid rgba(255,255,255,0.08)', shadow: 'none' },
+            { padding: '14px 38px', fontSize: '1.05rem', opacity: 1,    color: '#fff', bg: 'linear-gradient(135deg, #f093fb, #f5576c)', border: 'none', shadow: '0 4px 20px rgba(245,87,108,0.3)' },
+            { padding: '15px 42px', fontSize: '1.1rem',  opacity: 1,    color: '#fff', bg: 'linear-gradient(135deg, #f093fb, #f5576c)', border: 'none', shadow: '0 5px 25px rgba(245,87,108,0.35)' },
+            { padding: '16px 46px', fontSize: '1.15rem', opacity: 1,    color: '#fff', bg: 'linear-gradient(135deg, #f093fb, #f5576c)', border: 'none', shadow: '0 6px 30px rgba(245,87,108,0.4)' },
+            { padding: '17px 50px', fontSize: '1.2rem',  opacity: 1,    color: '#fff', bg: 'linear-gradient(135deg, #f093fb, #f5576c)', border: 'none', shadow: '0 6px 35px rgba(245,87,108,0.45)' },
+            { padding: '19px 55px', fontSize: '1.3rem',  opacity: 1,    color: '#fff', bg: 'linear-gradient(135deg, #f093fb, #f5576c)', border: 'none', shadow: '0 8px 40px rgba(245,87,108,0.5)' },
+            { padding: '22px 62px', fontSize: '1.4rem',  opacity: 1,    color: '#fff', bg: 'linear-gradient(135deg, #f093fb, #f5576c)', border: 'none', shadow: '0 10px 50px rgba(245,87,108,0.6)' },
+        ];
+
+        function applyYesStep(stepIndex) {
+            const s = yesSteps[Math.min(stepIndex, yesSteps.length - 1)];
+            Object.assign(btnYes.style, {
+                padding: s.padding, fontSize: s.fontSize, opacity: s.opacity,
+                color: s.color, background: s.bg, border: s.border, boxShadow: s.shadow
+            });
+            if (stepIndex >= 1) btnYes.classList.add('active');
+        }
+
+        function handleNoInteraction(e) {
+            if (e) e.preventDefault();
+            if (isMoving) return;
+
+            isMoving = true;
+            noAttempts++;
+
+            if (noAttempts < noTexts.length) {
+                btnNo.textContent = noTexts[noAttempts];
+                noLabel.style.opacity = '0';
+                noLabel.style.transition = 'opacity 0.4s';
+
+                const distance = 80 + Math.random() * 70;
+                const angle = Math.random() * Math.PI * 2;
+                let dx = Math.cos(angle) * distance;
+                let dy = Math.sin(angle) * distance;
+
+                const rect = noWrapper.getBoundingClientRect();
+                const newLeft = rect.left + dx;
+                const newTop = rect.top + dy;
+                const pad = 30;
+
+                if (newLeft < pad) dx += (pad - newLeft);
+                if (newLeft + rect.width > window.innerWidth - pad) dx -= (newLeft + rect.width - window.innerWidth + pad);
+                if (newTop < pad) dy += (pad - newTop);
+                if (newTop + rect.height > window.innerHeight - pad) dy -= (newTop + rect.height - window.innerHeight + pad);
+
+                totalX += dx;
+                totalY += dy;
+                noWrapper.style.transform = `translate(${totalX}px, ${totalY}px)`;
+
+                applyYesStep(noAttempts);
+                setTimeout(() => { isMoving = false; }, 1500);
+            } else {
+                noWrapper.style.opacity = '0';
+                noWrapper.style.transform = `translate(${totalX}px, ${totalY}px) scale(0)`;
+                setTimeout(() => {
+                    noWrapper.style.display = 'none';
+                    hint.textContent = 'სწორი არჩევანი მხოლოდ ერთია 😌';
+                    hint.classList.add('show');
+                }, 600);
+                applyYesStep(yesSteps.length - 1);
+            }
+        }
+
+        btnNo.addEventListener('mouseenter', handleNoInteraction);
+        btnNo.addEventListener('touchstart', handleNoInteraction, { passive: false });
+        btnNo.addEventListener('click', handleNoInteraction);
+
+        // ===== Yes =====
+        btnYes.addEventListener('click', () => {
+            if (!btnYes.classList.contains('active')) return;
+
+            // Notify via Telegram
+            sendToTelegram('💕 კინოზე <b>დათანხმდა!</b>');
+
+            // Hide No immediately
+            noWrapper.style.display = 'none';
+            hint.style.display = 'none';
+            stopFloaters();
+
+            // Hearts + fade to page 2 simultaneously
+            const rect = btnYes.getBoundingClientRect();
+            spawnHearts(10, rect.left + rect.width / 2, rect.top + rect.height / 2, 200);
+            showPage2();
+        });
+
+        // ===== Shared: fade page =====
+        function fadePage(callback) {
+            const card = document.getElementById('card');
+            card.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(12px)';
+            setTimeout(() => {
+                callback(card);
+                // Force reflow then animate in
+                void card.offsetHeight;
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 350);
+        }
+
+        // ===== PAGE 2: მშვენიერი / Kiss You =====
+        function showPage2() {
+            fadePage((card) => {
+                card.innerHTML = `
+                    <p style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700; margin-bottom:8px;
+                        background:linear-gradient(135deg,#f093fb,#f5576c); -webkit-background-clip:text;
+                        -webkit-text-fill-color:transparent; background-clip:text;">მშვენიერი</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:2rem; font-style:italic;
+                        color:rgba(255,255,255,0.7); margin-bottom:50px; letter-spacing:2px;">Kiss You</p>
+                    <button class="btn-next" id="btnNext2">შემდეგი</button>
+                `;
+                document.getElementById('btnNext2').addEventListener('click', showPage3);
+            });
+        }
+
+        // ===== PAGE 3: ძაან საყვარელი ხარ =====
+        function showPage3() {
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            spawnHearts(20, cx, cy, Math.min(window.innerWidth, window.innerHeight) * 0.8);
+
+            fadePage((card) => {
+                card.innerHTML = `
+                    <p style="font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; line-height:1.4;
+                        margin-bottom:50px; background:linear-gradient(135deg,#f093fb,#f5576c,#fda085);
+                        -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+                        animation:textPulse 2s ease-in-out infinite alternate;">ძაან საყვარელი ხარ</p>
+                    <button class="btn-next" id="btnNext3">შემდეგი</button>
+                `;
+                document.getElementById('btnNext3').addEventListener('click', showPage4);
+            });
+        }
+
+        // ===== PAGE 4: რა წავიღოთ? =====
+        function showPage4() {
+            fadePage((card) => {
+                card.innerHTML = `
+                    <p style="font-size:2.5rem; margin-bottom:10px;">🍿</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:#fff;
+                        margin-bottom:35px;">რა წავიღოთ?</p>
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+                        <button class="btn-choice" data-choice="1"
+                            style="padding:14px 30px; width:100%; max-width:320px; font-family:'Inter',sans-serif;
+                            font-size:1rem; font-weight:500; color:#fff; background:rgba(255,255,255,0.08);
+                            border:1px solid rgba(255,255,255,0.15); border-radius:16px; cursor:pointer;
+                            transition:all 0.3s ease; text-align:left;">
+                            🥤🍿 კოლა + პოპკორნი
+                        </button>
+                        <button class="btn-choice" data-choice="2"
+                            style="padding:14px 30px; width:100%; max-width:320px; font-family:'Inter',sans-serif;
+                            font-size:1rem; font-weight:500; color:#fff; background:rgba(255,255,255,0.08);
+                            border:1px solid rgba(255,255,255,0.15); border-radius:16px; cursor:pointer;
+                            transition:all 0.3s ease; text-align:left;">
+                            💧🍿 წყალი + პოპკორნი
+                        </button>
+                        <button class="btn-choice" data-choice="3"
+                            style="padding:14px 30px; width:100%; max-width:320px; font-family:'Inter',sans-serif;
+                            font-size:1rem; font-weight:500; color:rgba(255,255,255,0.9);
+                            background:linear-gradient(135deg, rgba(240,147,251,0.15), rgba(245,87,108,0.15));
+                            border:1px solid rgba(245,87,108,0.3); border-radius:16px; cursor:pointer;
+                            transition:all 0.3s ease; text-align:left;">
+                            🎬 Full Package: კოლა, პოპკორნი<br>
+                            <span style="font-size:0.85rem; opacity:0.7;">და გამოსვლისას ლუდი 🍺</span>
+                        </button>
+                        <button class="btn-choice" data-choice="other"
+                            style="padding:14px 30px; width:100%; max-width:320px; font-family:'Inter',sans-serif;
+                            font-size:1rem; font-weight:500; color:rgba(255,255,255,0.5); background:rgba(255,255,255,0.04);
+                            border:1px solid rgba(255,255,255,0.1); border-radius:16px; cursor:pointer;
+                            transition:all 0.3s ease; text-align:left;">
+                            ✏️ სხვა...
+                        </button>
+                        <div id="otherInput" style="display:none; width:100%; max-width:320px;">
+                            <input type="text" id="otherText" placeholder="ჩაწერე რა გინდა..."
+                                style="width:100%; padding:14px 20px; font-family:'Inter',sans-serif;
+                                font-size:1rem; color:#fff; background:rgba(255,255,255,0.08);
+                                border:1px solid rgba(245,87,108,0.3); border-radius:16px; outline:none;
+                                transition:border-color 0.3s ease; margin-bottom:12px;"
+                                onfocus="this.style.borderColor='rgba(245,87,108,0.6)'"
+                                onblur="this.style.borderColor='rgba(245,87,108,0.3)'" />
+                            <button class="btn-next" id="btnOtherConfirm" style="width:100%;">მზადაა!</button>
+                        </div>
+                    </div>
+                `;
+
+                // Choice hover effects
+                card.querySelectorAll('.btn-choice').forEach(btn => {
+                    btn.addEventListener('mouseenter', function() {
+                        this.style.background = 'rgba(255,255,255,0.12)';
+                        this.style.borderColor = 'rgba(245,87,108,0.4)';
+                        this.style.transform = 'scale(1.02)';
+                    });
+                    btn.addEventListener('mouseleave', function() {
+                        const c = this.dataset.choice;
+                        this.style.background = c === '3'
+                            ? 'linear-gradient(135deg, rgba(240,147,251,0.15), rgba(245,87,108,0.15))'
+                            : c === 'other' ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.08)';
+                        this.style.borderColor = c === '3' ? 'rgba(245,87,108,0.3)' : c === 'other' ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.15)';
+                        this.style.transform = 'scale(1)';
+                    });
+                    btn.addEventListener('click', function() {
+                        if (this.dataset.choice === 'other') {
+                            // Show text input
+                            document.getElementById('otherInput').style.display = 'block';
+                            this.style.display = 'none';
+                            document.getElementById('otherText').focus();
+                        } else {
+                            handleChoice(this.dataset.choice);
+                        }
+                    });
+                });
+
+                // "Other" confirm button
+                const otherConfirm = document.getElementById('btnOtherConfirm');
+                if (otherConfirm) {
+                    otherConfirm.addEventListener('click', () => {
+                        const text = document.getElementById('otherText').value.trim();
+                        if (text) handleChoice('custom', text);
+                    });
+                    // Also allow Enter key
+                    document.getElementById('otherText').addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter') {
+                            const text = e.target.value.trim();
+                            if (text) handleChoice('custom', text);
+                        }
+                    });
+                }
+            });
+        }
+
+        // ===== Choice selected =====
+        function handleChoice(choice, customText) {
+            const labels = {
+                '1': '🥤🍿 კოლა + პოპკორნი',
+                '2': '💧🍿 წყალი + პოპკორნი',
+                '3': '🎬🍺 Full Package!',
+                'custom': '✏️ ' + (customText || '')
+            };
+
+            // Send choice to Telegram
+            sendToTelegram('🍿 არჩევანი: <b>' + labels[choice] + '</b>');
+
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            spawnHearts(12, cx, cy, 300);
+
+            fadePage((card) => {
+                card.innerHTML = `
+                    <p style="font-size:3rem; margin-bottom:15px;">🎉</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:1.6rem; color:#fff; margin-bottom:8px;">
+                        შენი არჩევანი:</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:2rem; font-weight:700;
+                        margin-bottom:35px; background:linear-gradient(135deg,#f093fb,#f5576c);
+                        -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+                        background-clip:text;">${labels[choice]}</p>
+                    <button class="btn-next" id="btnNext4">შემდეგი</button>
+                `;
+                document.getElementById('btnNext4').addEventListener('click', showPage5);
+            });
+        }
+
+        // ===== PAGE 5: რომელ ფილმზე წავიდეთ? =====
+        const movies = [
+            { id: 'QXcNiZV_0tE', title: 'ბუზღუნას წყალქვეშა თავგადასავალი', badge: 'PG', emoji: '🐠' },
+            { id: 'Sm9LGaYgaBU', title: 'ქარიშხლიანი უღელტეხილი', badge: 'R', emoji: '💔' },
+            { id: 'MtK3Mv3-PCE', title: 'გვიშველეთ!', badge: 'R', emoji: '😱' },
+            { id: 'UJrghaPJ0RY', title: 'კივილი 7', badge: 'R', emoji: '🔪' }
+        ];
+
+        function showPage5() {
+            document.body.classList.add('scrollable');
+            fadePage((card) => {
+                card.style.maxWidth = '500px';
+                card.innerHTML = `
+                    <p style="font-size:2.5rem; margin-bottom:10px;">🎬</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:700; color:#fff;
+                        margin-bottom:30px;">რომელ ფილმზე წავიდეთ?</p>
+                    <div id="movieList" style="display:flex; flex-direction:column; gap:18px; width:100%;">
+                        ${movies.map((m, i) => `
+                            <div class="movie-card" data-idx="${i}" style="background:rgba(255,255,255,0.06);
+                                border:1px solid rgba(255,255,255,0.1); border-radius:16px; overflow:hidden;
+                                transition:all 0.3s ease; cursor:pointer;">
+                                <div class="movie-thumb" data-vid="${m.id}" style="position:relative; width:100%;
+                                    aspect-ratio:16/9; overflow:hidden; background:#000;">
+                                    <img src="https://img.youtube.com/vi/${m.id}/hqdefault.jpg" loading="lazy"
+                                        style="width:100%; height:100%; object-fit:cover; display:block;" />
+                                    <div class="play-overlay" style="position:absolute; inset:0; display:flex;
+                                        align-items:center; justify-content:center; background:rgba(0,0,0,0.35);
+                                        transition:background 0.3s ease;">
+                                        <div style="width:50px; height:50px; background:rgba(255,255,255,0.9);
+                                            border-radius:50%; display:flex; align-items:center; justify-content:center;
+                                            box-shadow:0 2px 15px rgba(0,0,0,0.3);">
+                                            <span style="font-size:1.2rem; color:#000; margin-left:3px;">▶</span>
+                                        </div>
+                                    </div>
+                                    <span style="position:absolute; top:8px; right:8px; padding:2px 8px;
+                                        background:rgba(0,0,0,0.7); color:#fff; font-size:0.7rem; font-weight:600;
+                                        border-radius:4px; letter-spacing:0.5px;">${m.badge}</span>
+                                </div>
+                                <div style="padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                                    <p style="font-family:'Inter',sans-serif; font-size:0.95rem; font-weight:500;
+                                        color:#fff; text-align:left; flex:1;">${m.emoji} ${m.title}</p>
+                                    <button class="btn-select" data-movie="${i}" style="padding:8px 18px;
+                                        font-family:'Inter',sans-serif; font-size:0.85rem; font-weight:600; color:#fff;
+                                        background:linear-gradient(135deg,#f093fb,#f5576c); border:none;
+                                        border-radius:25px; cursor:pointer; white-space:nowrap; flex-shrink:0;
+                                        transition:all 0.3s ease; box-shadow:0 2px 10px rgba(245,87,108,0.25);">
+                                        აირჩიე
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+
+                // Play trailer: click thumbnail → open YouTube in new tab
+                card.querySelectorAll('.movie-thumb').forEach(thumb => {
+                    thumb.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const vid = this.dataset.vid;
+                        window.open('https://youtu.be/' + vid, '_blank');
+                    });
+                });
+
+                // Hover effects on cards
+                card.querySelectorAll('.movie-card').forEach(mc => {
+                    mc.addEventListener('mouseenter', function() {
+                        this.style.borderColor = 'rgba(245,87,108,0.35)';
+                        this.style.background = 'rgba(255,255,255,0.09)';
+                    });
+                    mc.addEventListener('mouseleave', function() {
+                        this.style.borderColor = 'rgba(255,255,255,0.1)';
+                        this.style.background = 'rgba(255,255,255,0.06)';
+                    });
+                });
+
+                // Select button hover
+                card.querySelectorAll('.btn-select').forEach(btn => {
+                    btn.addEventListener('mouseenter', function() {
+                        this.style.transform = 'scale(1.05)';
+                        this.style.boxShadow = '0 4px 15px rgba(245,87,108,0.4)';
+                    });
+                    btn.addEventListener('mouseleave', function() {
+                        this.style.transform = 'scale(1)';
+                        this.style.boxShadow = '0 2px 10px rgba(245,87,108,0.25)';
+                    });
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const idx = parseInt(this.dataset.movie);
+                        handleMovieChoice(movies[idx]);
+                    });
+                });
+            });
+        }
+
+        // ===== Movie selected → final page =====
+        function handleMovieChoice(movie) {
+            document.body.classList.remove('scrollable');
+            window.scrollTo(0, 0);
+            sendToTelegram('🎬 ფილმი: <b>' + movie.title + '</b>');
+
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            spawnHearts(15, cx, cy, 300);
+
+            fadePage((card) => {
+                card.style.maxWidth = '460px';
+                card.innerHTML = `
+                    <p style="font-size:3rem; margin-bottom:15px;">🎬💕</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:1.5rem; color:rgba(255,255,255,0.7);
+                        margin-bottom:10px;">ვნახავთ:</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:2rem; font-weight:700;
+                        margin-bottom:30px; background:linear-gradient(135deg,#f093fb,#f5576c);
+                        -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+                        background-clip:text;">${movie.emoji} ${movie.title}</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:1.1rem; color:rgba(255,255,255,0.45);
+                        margin-bottom:25px;">დაწერე შენი ემოციები ან რაც გინდა ის 💭</p>
+                    <textarea id="emotionText" placeholder="ჩაწერე აქ..."
+                        style="width:100%; max-width:320px; min-height:90px; padding:14px 18px;
+                        font-family:'Inter',sans-serif; font-size:1rem; color:#fff;
+                        background:rgba(255,255,255,0.08); border:1px solid rgba(245,87,108,0.25);
+                        border-radius:16px; outline:none; resize:vertical;
+                        transition:border-color 0.3s ease;"
+                        onfocus="this.style.borderColor='rgba(245,87,108,0.6)'"
+                        onblur="this.style.borderColor='rgba(245,87,108,0.25)'"></textarea>
+                    <button class="btn-next" id="btnNext5" style="margin-top:20px;">შემდეგი</button>
+                `;
+                document.getElementById('btnNext5').addEventListener('click', () => {
+                    const text = document.getElementById('emotionText').value.trim();
+                    if (text) {
+                        sendToTelegram('💭 ემოციები: <b>' + text + '</b>');
+                    }
+                    showFinalPage();
+                });
+            });
+        }
+
+        // ===== FINAL PAGE =====
+        function showFinalPage() {
+            const cx = window.innerWidth / 2;
+            const cy = window.innerHeight / 2;
+            spawnHearts(20, cx, cy, Math.min(window.innerWidth, window.innerHeight) * 0.8);
+
+            fadePage((card) => {
+                card.style.maxWidth = '460px';
+                card.innerHTML = `
+                    <p style="font-size:5rem; margin-bottom:25px;">☁️</p>
+                    <p style="font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700;
+                        background:linear-gradient(135deg,#f093fb,#f5576c,#fda085);
+                        -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+                        background-clip:text; animation:textPulse 2s ease-in-out infinite alternate;">
+                        შეხვედრამდე</p>
+                `;
+            });
+        }
+    </script>
+
+</body>
+</html>
